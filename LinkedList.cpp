@@ -2,22 +2,27 @@
 #include <iostream>
 using namespace std;
 
-LinkedList::LinkedList() {
+LinkedList::LinkedList() 
+{
     List = nullptr;
 }
 
-LinkedList::~LinkedList() {
-    while (!isEmpty()) {
+LinkedList::~LinkedList()
+{
+    while (!isEmpty())
+    {
         dAS();
     }
 }
 
-bool LinkedList::isEmpty() const {
+bool LinkedList::isEmpty() const 
+{
     return List == nullptr;
 }
 
-// Insert at the start (iAS)
-void LinkedList::iAS(const Person& x) {
+
+void LinkedList::iAS(const Person& x) 
+{
     Node* p = new Node;
     p->info = x;
     p->pre = nullptr;
@@ -28,15 +33,18 @@ void LinkedList::iAS(const Person& x) {
     List = p;
 }
 
-// Delete from the start (dAS)
-int LinkedList::dAS() {
-    if (List == nullptr) {
+
+int LinkedList::dAS()
+{
+    if (List == nullptr) 
+    {
         return -999;
     }
     Node* p = List->next;
-    int x = List->info.getPriority();  // Return priority value instead of info
+    int x = List->info.getPriority();  
 
-    if (p != nullptr) {
+    if (p != nullptr)
+    {
         p->pre = nullptr;
     }
 
@@ -45,25 +53,30 @@ int LinkedList::dAS() {
     return x;
 }
 
-// Traverse the list and print all persons
-void LinkedList::traverse() const {
+
+void LinkedList::traverse() const 
+{
     Node* p = List;
-    while (p != nullptr) {
+    while (p != nullptr)
+    {
         p->info.printQueue();
         p = p->next;
     }
     cout << endl;
 }
 
-// Insert at the end (iAE)
-void LinkedList::iAE(const Person& x) {
-    if (List == nullptr) {
+
+void LinkedList::iAE(const Person& x) 
+{
+    if (List == nullptr)
+    {
         iAS(x);
     }
     else {
         Node* q = nullptr;
         Node* p = List;
-        while (p->next != nullptr) {
+        while (p->next != nullptr)
+        {
             p = p->next;
         }
         q = new Node;
@@ -74,22 +87,26 @@ void LinkedList::iAE(const Person& x) {
     }
 }
 
-// Delete from the end (dAE)
-int LinkedList::dAE() {
-    if (List == nullptr) {
+
+int LinkedList::dAE() 
+{
+    if (List == nullptr) 
+    {
         return -999;
     }
 
-    if (List->next == nullptr) {
+    if (List->next == nullptr) 
+    {
         return dAS();
     }
     else {
         Node* p = List;
-        while (p->next != nullptr) {
+        while (p->next != nullptr)
+        {
             p = p->next;
         }
 
-        int x = p->info.getPriority();  // Return priority value instead of info
+        int x = p->info.getPriority();  
 
         p->pre->next = nullptr;
         delete p;
@@ -97,36 +114,42 @@ int LinkedList::dAE() {
     }
 }
 
-// Find a person by name
-Node* LinkedList::find(const std::string& name) {
-    for (Node* p = List; p != nullptr; p = p->next) {
-        if (p->info.fullName == name) {
+
+Node* LinkedList::find(const std::string& name) 
+{
+    for (Node* p = List; p != nullptr; p = p->next) 
+    {
+        if (p->info.fullName == name) 
+        {
             return p;
         }
     }
     return nullptr;
 }
 
-// Insert in the middle based on priority (iAM)
-void LinkedList::iAM(const Person& x) {
+
+void LinkedList::iAM(const Person& x)
+{
     Node* p = List;
     Node* q = nullptr;
 
-    // Traverse the list and find the correct insertion point
-    while (p != nullptr && x.getPriority() >= p->info.getPriority()) {
+    
+    while (p != nullptr && x.getPriority() >= p->info.getPriority()) 
+    {
         q = p;
         p = p->next;
     }
 
-    // If q is NULL, insert at the start
-    if (q == nullptr) {
+    if (q == nullptr)
+    {
         iAS(x);
     }
-    else if (p == nullptr) {
-        iAE(x);  // Insert at the end if no next node
+    else if (p == nullptr) 
+    {
+        iAE(x); 
     }
-    else {
-        // Inserting between q and p
+    else 
+    {
         Node* newNode = new Node;
         newNode->info = x;
         newNode->next = p;
@@ -136,25 +159,27 @@ void LinkedList::iAM(const Person& x) {
     }
 }
 
-// Delete a person by name (dAM)
-int LinkedList::dAM(const std::string& name) {
+int LinkedList::dAM(const string& name) 
+{
     Node* p = find(name);
 
-    if (p == nullptr) {
-        return -999;  // Person not found
+    if (p == nullptr)
+    {
+        return -999;  
     }
 
-    if (p == List) {
-        return dAS();  // Person is at the start
+    if (p == List)
+    {
+        return dAS();  
     }
 
-    if (p->next == nullptr) {
-        return dAE();  // Person is at the end
+    if (p->next == nullptr)
+    {
+        return dAE();  
     }
 
-    // Person is in the middle
     p->pre->next = p->next;
     p->next->pre = p->pre;
     delete p;
-    return 1;  // Success
+    return 1;  
 }
